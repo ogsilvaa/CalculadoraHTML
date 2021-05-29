@@ -42,6 +42,50 @@
             background-color: bisque;
         }
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            border: 1px solid black;
+            width: 300px;
+        }
+
+        td {
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+            padding: 5px
+        }
+
+        button {
+            font-size: 50px;
+            border-radius: 10px;
+            transition-duration: 0.5s;
+            width: 50px
+        }
+
+        button:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .grande {
+            width: 200px
+        }
+
+        .pantalla {
+            font-size: 50px;
+            width: 300px;
+            border-radius: 10px;
+            background-color: bisque;
+        }
+
         .alto {
             height: 100px;
         }
@@ -53,8 +97,16 @@
             font-size: 10px;
         }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script>
+        let memoria = 0;
+        let limpieza = false;
+        let operadorAnterior = "";
         function escribe() {
+            if (limpieza) {
+                $("#pantalla").val("");
+                limpieza = false;
+            }
             let objeto = event.target;
             numero = objeto.innerHTML;
             let screen = document.getElementById("pantalla");
@@ -62,9 +114,39 @@
             screen.value = loQueTengoEnLaPantalla + numero;
         }
         function operacion(operador) {
+            limpieza = true;
+            let etiquetOperador = $(".operacion");
+            etiquetOperador.text(operador);
+            let valorActual = parseInt($("#pantalla").val());
             switch (operador) {
-                case '+': $("operacion").text(operador);
-                default: alert("No se puede hacer eso....");
+                case '+':
+                    memoria = memoria + valorActual;
+                    operadorAnterior = '+';
+                    break;
+                case '-':
+                    memoria = memoria + valorActual;
+                    operadorAnterior = '-';
+                    break;
+            }
+
+            $(".memoria").text(memoria);
+
+            switch (operador) {
+                case '=':
+                    let resultado = 0;
+                    let enPantalla = parseInt($("#pantalla").val());
+                    switch (operadorAnterior) {
+                        case '+':
+                            resultado = memoria + enPantalla;
+                            break;
+                        case '-':
+                            resultado = memoria - enPantalla;
+                            break;
+                    }
+                    $("#pantalla").val(resultado);
+                    break;
+                /*case '+': $("operacion").text(operador);
+                default: alert("No se puede hacer eso....");*/
             }
         }
     </script>
@@ -76,8 +158,9 @@
             <tr>
                 <td colspan=4>
                     <div style="position: relative;">
-                        <input type="text" id="pantalla" class=pantalla>
-                        <span class=operacion>hola</span>
+                        <input type="text" id="pantalla" class=pantalla />
+                        <span class=operacion></span>
+                        <span class=memoria></span>
                     </div>
                 </td>
             </tr>
@@ -91,13 +174,13 @@
                 <td><button onclick="escribe()">4</button></td>
                 <td><button onclick="escribe()">5</button></td>
                 <td><button onclick="escribe()">6</button></td>
-                <td><button onclick="escribe()">-</button></td>
+                <td><button onclick="operacion('-')">-</button></td>
             </tr>
             <tr>
                 <td><button onclick="escribe()">1</button></td>
                 <td><button onclick="escribe()">2</button></td>
                 <td><button onclick="escribe()">3</button></td>
-                <td rowspan=2><button class=alto>=</button></td>
+                <td rowspan=2><button class=alto onclick="operacion('=')">=</button></td>
             </tr>
             <tr>
                 <td colspan=3><button onclick="escribe()" class=grande>0</button></td>
