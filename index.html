@@ -11,21 +11,61 @@
             border: 1px solid black;
             width: 300px;
         }
+
         td {
             border: 1px solid black;
-            font-size: 50px;
             text-align: center;
             vertical-align: middle;
+            padding: 5px
         }
+
         button {
-            font-size: 50px
+            font-size: 50px;
+            border-radius: 10px;
+            transition-duration: 0.5s;
+            width: 50px
+        }
+
+        button:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .grande {
+            width: 200px
+        }
+
+        .pantalla {
+            font-size: 50px;
+            width: 300px;
+            border-radius: 10px;
+            background-color: bisque;
+        }
+
+        .alto {
+            height: 100px;
+        }
+
+        .operacion {
+            position: relative;
+            top: -60px;
+            left: 140px;
+            font-size: 10px;
         }
     </style>
     <script>
-        function escribe(numero){
-            let screen=document.getElementById("pantalla");
-            let loQueTengoEnLaPantalla=screen.innerHTML;
-            screen.innerHTML=loQueTengoEnLaPantalla+numero;
+        function escribe() {
+            let objeto = event.target;
+            numero = objeto.innerHTML;
+            let screen = document.getElementById("pantalla");
+            let loQueTengoEnLaPantalla = screen.value;
+            screen.value = loQueTengoEnLaPantalla + numero;
+        }
+        function operacion(operador) {
+            switch (operador) {
+                case '+': $("operacion").text(operador);
+                default: alert("No se puede hacer eso....");
+            }
         }
     </script>
 </head>
@@ -34,29 +74,34 @@
     <table>
         <tbody>
             <tr>
-                <td colspan=4 id="pantalla">
-                   &nbsp;
+                <td colspan=4>
+                    <div style="position: relative;">
+                        <input type="text" id="pantalla" class=pantalla>
+                        <span class=operacion>hola</span>
+                    </div>
                 </td>
             </tr>
             <tr>
-                <td>7</td>
-                <td>8</td>
-                <td>9</td>
-                <td>+</td>
+                <td><button onclick="escribe()">7</button></td>
+                <td><button onclick="escribe()">8</button></td>
+                <td><button onclick="escribe()">9</button></td>
+                <td><button onclick="operacion('+')">+</button></td>
             </tr>
             <tr>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>-</td>
+                <td><button onclick="escribe()">4</button></td>
+                <td><button onclick="escribe()">5</button></td>
+                <td><button onclick="escribe()">6</button></td>
+                <td><button onclick="escribe()">-</button></td>
             </tr>
             <tr>
-                <td><button onclick="escribe(1)">1</button></td>
-                <td><button onclick="escribe(2)">2</button></td>
-                <td><button>3</button></td>
-                <td rowspan=2>=</td>
+                <td><button onclick="escribe()">1</button></td>
+                <td><button onclick="escribe()">2</button></td>
+                <td><button onclick="escribe()">3</button></td>
+                <td rowspan=2><button class=alto>=</button></td>
             </tr>
-            <tr><td colspan=3><button>0</button></td></tr>
+            <tr>
+                <td colspan=3><button onclick="escribe()" class=grande>0</button></td>
+            </tr>
         </tbody>
     </table>
 </body>
